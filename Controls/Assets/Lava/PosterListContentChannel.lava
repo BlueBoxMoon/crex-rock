@@ -1,0 +1,19 @@
+﻿[
+{%- for Item in Items -%}
+  {%- assign imageGuid = Item | Attribute:'SeriesImage','RawValue' -%}
+  {
+    "Title": "{{ Item.Title | ToJSONSafeString }}",
+    "Description": "{{ Item | Attribute:'Summary' | ToJSONSafeString }}",
+    "DetailLeft": "{{ Item.StartDateTime | Date:'M/d/yyyy' }}",
+    "DetailRight": "",
+	"Image": {
+	  {%- if imageGuid != empty -%}
+	    "HD": "/GetImage.ashx?Guid={{ imageGuid }}&maxwidth=1280",
+		"FHD": "/GetImage.ashx?Guid={{ imageGuid }}&maxwidth=1920",
+		"UHD": "/GetImage.ashx?Guid={{ imageGuid }}"
+	  {%- endif -%}
+	},
+    "ActionUrl": "/api/crex/page/{{ LinkedPages.DetailPageId }}?ContentItemId={{ Item.Id }}"
+  },
+{%- endfor -%}
+]

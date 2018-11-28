@@ -1,0 +1,16 @@
+﻿[
+{%- for item in Items -%}
+  {
+	"Message": "{{ item.Content | ToJSONSafeString }}",
+	"Image": {
+	  {%- assign imageGuid = item | Attribute:'Image','RawValue' -%}
+	  {%- if imageGuid != empty -%}
+	    "HD": "/GetImage.ashx?Guid={{ imageGuid }}&width=1280",
+	    "FHD": "/GetImage.ashx?Guid={{ imageGuid }}&width=1920",
+	    "UHD": "/GetImage.ashx?Guid={{ imageGuid }}"
+	  {%- endif -%}
+	},
+	"StartDateTime": "{{ item.StartDateTime | ToISO8601 }}"
+  },
+{%- endfor -%}
+]

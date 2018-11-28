@@ -1,0 +1,4 @@
+﻿{
+  "Title": "{{ Page.PageTitle | ToJSONSafeString }}",
+  "ActionUrl": "/api/crex/page/{{ Page.Id }}"
+}

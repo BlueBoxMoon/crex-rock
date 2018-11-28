@@ -1,0 +1,22 @@
+﻿[
+{%- for Item in Items -%}
+  {%- assign imageGuid = Item | Attribute:'Image','RawValue' -%}
+  {%- if imageGuid == empty -%}
+    {%- assign imageGuid = ParentItem | Attribute:'SeriesImage','RawValue' -%}
+  {%- endif -%}
+  {
+    "Title": "{{ Item.Title | ToJSONSafeString }}",
+    "Description": "{{ Item.Content | StripHtml | ToJSONSafeString }}",
+    "DetailLeft": "{{ Item.StartDateTime | Date:'M/d/yyyy' }}",
+    "DetailRight": "{{ Item | Attribute:'Speaker' | ToJSONSafeString }}",
+	"Image": {
+	  {%- if imageGuid != empty -%}
+	    "HD": "/GetImage.ashx?Guid={{ imageGuid }}&maxwidth=1280",
+		"FHD": "/GetImage.ashx?Guid={{ imageGuid }}&maxwidth=1920",
+		"UHD": "/GetImage.ashx?Guid={{ imageGuid }}"
+	  {%- endif -%}
+	},
+    "ActionUrl": "/api/crex/page/{{ LinkedPages.DetailPageId }}?ContentItemId={{ Item.Id }}"
+  },
+{%- endfor -%}
+]

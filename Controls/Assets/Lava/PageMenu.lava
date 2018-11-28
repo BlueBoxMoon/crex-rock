@@ -1,0 +1,14 @@
+﻿[
+{%- for Page in Pages -%}
+  {%- if Page.DisplayInNavWhen == 'Never' -%}
+	{%- continue -%}
+  {%- endif -%}
+
+  {%- assign isAuthorized = Page | HasRightsTo:'View' -%}
+  {%- if Page.DisplayInNavWhen == 'WhenAllowed' and isAuthorized == false -%}
+    {%- continue -%}
+  {%- endif -%}
+
+  {% include '~/Plugins/com_blueboxmoon/Crex/Assets/Lava/PageMenuItem.lava' %},
+{%- endfor -%}
+]
