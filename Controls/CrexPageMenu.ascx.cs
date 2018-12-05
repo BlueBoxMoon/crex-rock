@@ -21,7 +21,7 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
     [TextField( "Layout", "The screen layout to use on the TV.", true, "Menu", "CustomSetting" )]
     [TextField( "Background Image", "The image to be displayed in the background. Suggested size is 3840x2160.", false, "", "CustomSetting" )]
     [TextField( "Background Image Url", "The Guid or url that will be used for the background image. <span class='tip tip-lava'></span>", false, "", "CustomSetting" )]
-    [TextField( "Template", "The lava template to use when generating the menu items.", true, "{% include '~/Plugins/com_blueboxmoon/Crex/Assets/Lava/PageMenuItem.lava' %}", "CustomSetting" )]
+    [TextField( "Template", "The lava template to use when generating the menu items.", true, "{% include '~/Plugins/com_blueboxmoon/Crex/Assets/Lava/PageMenu.lava' %}", "CustomSetting" )]
     [TextField( "Notification Channel", "The content channel to use for posting notifications on the menu (only applies to Menu layout).", false, "", "CustomSetting" )]
     [TextField( "Notification Template", "The lava template to use when generating the notification items.", true, "{% include '~/Plugins/com_blueboxmoon/Crex/Assets/Lava/Notifications.lava' %}", "CustomSetting" )]
     [LavaCommandsField( "Enabled Lava Commands", "The lava commands to make available when parsing the template.", false, order: 0 )]
@@ -208,7 +208,7 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
             //
             if ( contentChannel.ContentChannelType.DateRangeType == Rock.Model.ContentChannelDateType.DateRange )
             {
-                items = items.Where( i => i.ExpireDateTime > now );
+                items = items.Where( i => !i.ExpireDateTime.HasValue || i.ExpireDateTime > now );
             }
 
             items = items.OrderBy( i => i.StartDateTime );

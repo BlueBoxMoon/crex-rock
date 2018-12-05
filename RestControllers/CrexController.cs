@@ -35,7 +35,7 @@ namespace com.blueboxmoon.Crex.RestControllers
             var pageCache = PageCache.Read( id );
             if ( pageCache == null || !pageCache.IsAuthorized( Authorization.VIEW, person ) )
             {
-                return new CrexAction();
+                return Unauthorized();
             }
 
             //SavePageViewInteraction( pageCache, person );

@@ -71,6 +71,7 @@
     <Compile Include="ICrexBlock.cs" />
     <Compile Include="LavaFilters.cs" />
     <Compile Include="EntityContextCollection.cs" />
+    <Compile Include="Migrations\002_SetDefaultSecurity.cs" />
     <Compile Include="Migrations\ExtendedMigration.cs" />
     <Compile Include="Migrations\001_InstallSystemData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

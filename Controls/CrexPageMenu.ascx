@@ -39,7 +39,7 @@
                             <h1>Notifications</h1>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <Rock:RockDropDownList ID="ddlNotificationChannel" runat="server" Label="Notification Channel" Help="The content channel to use for posting notifications on the menu (only applies to Menu layout)." Required="true" ValidationGroup="EditSettings" DataValueField="Guid" DataTextField="Name" />
+                                    <Rock:RockDropDownList ID="ddlNotificationChannel" runat="server" Label="Notification Channel" Help="The content channel to use for posting notifications on the menu (only applies to Menu layout)." Required="false" ValidationGroup="EditSettings" DataValueField="Guid" DataTextField="Name" />
                                 </div>
 
                                 <div class="col-md-6">
