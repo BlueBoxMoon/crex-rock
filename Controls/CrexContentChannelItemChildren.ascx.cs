@@ -132,7 +132,7 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
                 return new CrexAction();
             }
 
-            var detailPage = Rock.Web.Cache.PageCache.Read( GetAttributeValue( "DetailPage" ).AsGuid() );
+            var detailPage = Rock.Web.Cache.PageCache.Get( GetAttributeValue( "DetailPage" ).AsGuid() );
             var linkedPages = new Dictionary<string, object>
             {
                 { "DetailPageId", detailPage != null ? detailPage.Id.ToString() : string.Empty }

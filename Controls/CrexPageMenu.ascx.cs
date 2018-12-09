@@ -89,7 +89,7 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
 
             using ( var rockContext = new RockContext() )
             {
-                var pageCache = PageCache.Read( BlockCache.PageId.Value, rockContext );
+                var pageCache = PageCache.Get( BlockCache.PageId.Value, rockContext );
 
                 mergeFields.AddOrReplace( "Pages", pageCache.GetPages( rockContext ) );
 

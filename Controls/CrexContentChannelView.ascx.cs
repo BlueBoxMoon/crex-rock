@@ -172,10 +172,12 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
 
             hfDataFilterId.Value = GetAttributeValue( "FilterId" );
 
-            var directions = new Dictionary<string, string>();
-            directions.Add( "", "" );
-            directions.Add( SortDirection.Ascending.ConvertToInt().ToString(), "Ascending" );
-            directions.Add( SortDirection.Descending.ConvertToInt().ToString(), "Descending" );
+            var directions = new Dictionary<string, string>
+            {
+                { "", "" },
+                { SortDirection.Ascending.ConvertToInt().ToString(), "Ascending" },
+                { SortDirection.Descending.ConvertToInt().ToString(), "Descending" }
+            };
             kvlOrder.CustomValues = directions;
             kvlOrder.Value = GetAttributeValue( "Order" );
             kvlOrder.Required = true;
@@ -218,7 +220,7 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
 
                 mergeFields.AddOrReplace( "ContentChannel", contentChannel );
                 mergeFields.AddOrReplace( "Items", contentChannelItems.ToList() );
-                var detailPage = Rock.Web.Cache.PageCache.Read( GetAttributeValue( "DetailPage" ).AsGuid() );
+                var detailPage = Rock.Web.Cache.PageCache.Get( GetAttributeValue( "DetailPage" ).AsGuid() );
                 var linkedPages = new Dictionary<string, object>
                 {
                     { "DetailPageId", detailPage != null ? detailPage.Id.ToString() : string.Empty }
@@ -285,21 +287,25 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
 
                     if ( filter == null || filter.ExpressionType == FilterExpressionType.Filter )
                     {
-                        filter = new DataViewFilter();
-                        filter.Guid = new Guid();
-                        filter.ExpressionType = FilterExpressionType.GroupAll;
+                        filter = new DataViewFilter
+                        {
+                            Guid = new Guid(),
+                            ExpressionType = FilterExpressionType.GroupAll
+                        };
                     }
 
                     CreateFilterControl( channel, filter, true, rockContext );
 
-                    kvlOrder.CustomKeys = new Dictionary<string, string>();
-                    kvlOrder.CustomKeys.Add( "", "" );
-                    kvlOrder.CustomKeys.Add( "Title", "Title" );
-                    kvlOrder.CustomKeys.Add( "Priority", "Priority" );
-                    kvlOrder.CustomKeys.Add( "Status", "Status" );
-                    kvlOrder.CustomKeys.Add( "StartDateTime", "Start" );
-                    kvlOrder.CustomKeys.Add( "ExpireDateTime", "Expire" );
-                    kvlOrder.CustomKeys.Add( "Order", "Order" );
+                    kvlOrder.CustomKeys = new Dictionary<string, string>
+                    {
+                        { "", "" },
+                        { "Title", "Title" },
+                        { "Priority", "Priority" },
+                        { "Status", "Status" },
+                        { "StartDateTime", "Start" },
+                        { "ExpireDateTime", "Expire" },
+                        { "Order", "Order" }
+                    };
 
                     //
                     // Add item attributes to the custom keys.
@@ -525,7 +531,7 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
         {
             if ( channel != null )
             {
-                var entityTypeCache = EntityTypeCache.Read( typeof( ContentChannelItem ) );
+                var entityTypeCache = EntityTypeCache.Get( typeof( ContentChannelItem ) );
                 if ( entityTypeCache != null )
                 {
                     var entityType = entityTypeCache.GetEntityType();
@@ -541,7 +547,7 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
                         .ToList() )
                     {
                         // remove EntityFields that aren't attributes for this ContentChannelType or ChannelChannel (to avoid duplicate Attribute Keys)
-                        var attribute = AttributeCache.Read( entityField.AttributeGuid.Value );
+                        var attribute = AttributeCache.Get( entityField.AttributeGuid.Value );
                         if ( attribute != null &&
                             attribute.EntityTypeQualifierColumn == "ContentChannelTypeId" &&
                             attribute.EntityTypeQualifierValue.AsInteger() != channel.ContentChannelTypeId )
@@ -560,18 +566,22 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
                     if ( entityFields != null )
                     {
                         // Remove the status field
-                        var ignoreFields = new List<string>();
-                        ignoreFields.Add( "ContentChannelId" );
-                        ignoreFields.Add( "Status" );
+                        var ignoreFields = new List<string>
+                        {
+                            "ContentChannelId",
+                            "Status"
+                        };
 
                         entityFields = entityFields.Where( f => !ignoreFields.Contains( f.Name ) ).ToList();
 
                         // Add any additional attributes that are specific to channel/type
-                        var item = new ContentChannelItem();
-                        item.ContentChannel = channel;
-                        item.ContentChannelId = channel.Id;
-                        item.ContentChannelType = channel.ContentChannelType;
-                        item.ContentChannelTypeId = channel.ContentChannelTypeId;
+                        var item = new ContentChannelItem
+                        {
+                            ContentChannel = channel,
+                            ContentChannelId = channel.Id,
+                            ContentChannelType = channel.ContentChannelType,
+                            ContentChannelTypeId = channel.ContentChannelTypeId
+                        };
                         item.LoadAttributes( rockContext );
                         foreach ( var attribute in item.Attributes
                             .Where( a =>
@@ -649,7 +659,7 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
 
                     if ( filter.EntityTypeId.HasValue )
                     {
-                        var entityTypeCache = Rock.Web.Cache.EntityTypeCache.Read( filter.EntityTypeId.Value, rockContext );
+                        var entityTypeCache = Rock.Web.Cache.EntityTypeCache.Get( filter.EntityTypeId.Value, rockContext );
                         if ( entityTypeCache != null )
                         {
                             filterControl.FilterEntityTypeName = entityTypeCache.Name;
@@ -728,9 +738,11 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
 
         private DataViewFilter GetFilterGroupControl( FilterGroup filterGroup )
         {
-            DataViewFilter filter = new DataViewFilter();
-            filter.Guid = filterGroup.DataViewFilterGuid;
-            filter.ExpressionType = filterGroup.FilterType;
+            DataViewFilter filter = new DataViewFilter
+            {
+                Guid = filterGroup.DataViewFilterGuid,
+                ExpressionType = filterGroup.FilterType
+            };
             foreach ( Control control in filterGroup.Controls )
             {
                 DataViewFilter childFilter = GetFilterControl( control );
@@ -745,13 +757,15 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
 
         private DataViewFilter GetFilterFieldControl( FilterField filterField )
         {
-            DataViewFilter filter = new DataViewFilter();
-            filter.Guid = filterField.DataViewFilterGuid;
-            filter.ExpressionType = FilterExpressionType.Filter;
-            filter.Expanded = filterField.Expanded;
+            DataViewFilter filter = new DataViewFilter
+            {
+                Guid = filterField.DataViewFilterGuid,
+                ExpressionType = FilterExpressionType.Filter,
+                Expanded = filterField.Expanded
+            };
             if ( filterField.FilterEntityTypeName != null )
             {
-                filter.EntityTypeId = Rock.Web.Cache.EntityTypeCache.Read( filterField.FilterEntityTypeName ).Id;
+                filter.EntityTypeId = Rock.Web.Cache.EntityTypeCache.Get( filterField.FilterEntityTypeName ).Id;
                 filter.Selection = filterField.GetSelection();
             }
 
@@ -795,8 +809,10 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
         protected void groupControl_AddFilterClick( object sender, EventArgs e )
         {
             FilterGroup groupControl = sender as FilterGroup;
-            FilterField filterField = new FilterField();
-            filterField.DataViewFilterGuid = Guid.NewGuid();
+            FilterField filterField = new FilterField
+            {
+                DataViewFilterGuid = Guid.NewGuid()
+            };
             groupControl.Controls.Add( filterField );
             filterField.ID = string.Format( "ff_{0}", filterField.DataViewFilterGuid.ToString( "N" ) );
 
@@ -814,8 +830,10 @@ namespace RockWeb.Plugins.com_blueboxmoon.Crex
         protected void groupControl_AddGroupClick( object sender, EventArgs e )
         {
             FilterGroup groupControl = sender as FilterGroup;
-            FilterGroup childGroupControl = new FilterGroup();
-            childGroupControl.DataViewFilterGuid = Guid.NewGuid();
+            FilterGroup childGroupControl = new FilterGroup
+            {
+                DataViewFilterGuid = Guid.NewGuid()
+            };
             groupControl.Controls.Add( childGroupControl );
             childGroupControl.ID = string.Format( "fg_{0}", childGroupControl.DataViewFilterGuid.ToString( "N" ) );
             childGroupControl.FilteredEntityTypeName = groupControl.FilteredEntityTypeName;
