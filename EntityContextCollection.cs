@@ -79,7 +79,7 @@ namespace com.blueboxmoon.Crex
         /// <returns>The entity context.</returns>
         public T GetEntity<T>()
         {
-            return ( T ) GetEntity( EntityTypeCache.Read( typeof( T ) ) );
+            return ( T ) GetEntity( EntityTypeCache.Get( typeof( T ) ) );
         }
 
         /// <summary>

@@ -62,7 +62,7 @@ namespace com.blueboxmoon.Crex
                     foreach ( var contextType in PageCache.PageContexts )
                     {
                         int? contextId = HttpContext.Current.Request.QueryString[contextType.Value].AsIntegerOrNull();
-                        var entityType = EntityTypeCache.Read( contextType.Key );
+                        var entityType = EntityTypeCache.Get( contextType.Key );
 
                         if ( entityType != null && contextId.HasValue )
                         {

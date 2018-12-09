@@ -32,7 +32,7 @@ namespace com.blueboxmoon.Crex.RestControllers
                 HttpContext.Current.Items.Add( "CurrentPerson", person );
             }
 
-            var pageCache = PageCache.Read( id );
+            var pageCache = PageCache.Get( id );
             if ( pageCache == null || !pageCache.IsAuthorized( Authorization.VIEW, person ) )
             {
                 return Unauthorized();
